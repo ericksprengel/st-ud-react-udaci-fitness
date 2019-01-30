@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import {
   SafeAreaView,
   View,
@@ -12,6 +13,8 @@ import UdaciSteppers from './UdaciSteppers'
 import DateHeader from './DateHeader'
 import TextButton from './TextButton'
 import { submitEntry, removeEntry } from '../utils/api'
+import { addEntry } from '../actions'
+import { getDailyReminderValue } from '../utils/helpers'
 
 const SubmitBtn = ({ onPress }) => (
   <TouchableOpacity
@@ -65,6 +68,9 @@ class AddEntry extends Component {
     const entry = this.state
 
     // Update Redux
+    this.props.dispatch(addEntry({
+      [key]: entry
+    }))
 
     this.setState(() => ({
       run: 0,
@@ -86,6 +92,9 @@ class AddEntry extends Component {
     const key = timeToString()
 
     // Update Redux
+    this.props.dispatch(addEntry({
+      [key]: getDailyReminderValue(),
+    }))
 
     // Route to Home
 
@@ -147,4 +156,12 @@ class AddEntry extends Component {
   }
 }
 
-export default AddEntry
+const mapStateToProps = (state) => {
+  const key = timeToString()
+
+  return {
+    alreadyLogged: state[key]
+      && typeof state[key].today === 'undefined'
+  }
+}
+export default connect(mapStateToProps)(AddEntry)
