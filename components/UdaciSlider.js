@@ -1,9 +1,22 @@
 import React, { Component } from 'react'
 import {
   Slider,
-  View,
+  StyleSheet,
   Text,
+  View,
 } from 'react-native'
+import MetricCounter from './MetricCounter';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  slider: {
+    flex: 1,
+    marginRight: 20,
+  },
+})
 
 const UdaciSlider = ({
   value,
@@ -12,16 +25,16 @@ const UdaciSlider = ({
   step,
   max,
 }) => (
-  <View>
+  <View style={styles.container}>
     <Slider
+      style={styles.slider}
       value={value}
       onValueChange={onChange}
       step={step}
       minimumValue={0}
       maximumValue={max}
     />
-    <Text>{value}</Text>
-    <Text>{unit}</Text>
+    <MetricCounter value={value} unit={unit} />
   </View>
 )
 
